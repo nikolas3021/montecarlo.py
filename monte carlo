@@ -1,0 +1,21 @@
+import numpy as np
+
+# Parâmetros da simulação
+num_simulacoes = 10000  # Número de simulações
+dias = 252  # Número de dias (um ano de pregão)
+retorno_medio_diario = 0.0005  # Suposta média diária de retorno (0.05%)
+volatilidade_diaria = 0.02  # Suposto desvio padrão dos retornos diários (2%)
+
+# Simulação Monte Carlo
+simulacoes = np.random.normal(retorno_medio_diario, volatilidade_diaria, (num_simulacoes, dias))
+
+# Calcula o retorno acumulado ao longo dos dias
+retornos_acumulados = np.cumprod(1 + simulacoes, axis=1)
+
+# Estatísticas da simulação
+retorno_final_medio = np.mean(retornos_acumulados[:, -1])
+percentil_5 = np.percentile(retornos_acumulados[:, -1], 5)
+percentil_95 = np.percentile(retornos_acumulados[:, -1], 95)
+
+print(f"Retorno médio após {dias} dias: {retorno_final_medio:.2f}")
+print(f"Intervalo de confiança (5% - 95%): [{percentil_5:.2f}, {percentil_95:.2f}]")
